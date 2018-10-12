@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>1物理像素问题</title>
+	<meta name = 'viewport' content = 'width = device-width  initial-scale = 1.0 '>
+	<style type="text/css">
+	*{
+		margin:0;
+		padding:0;
+	}
+		.test1{
+			width:16rem;
+			height:1px;
+			background:black;
+			/*margin-top:30px; 所有的px都会进行缩放，必须改为rem*/  
+			margin-top:1rem; 
+		}
+	</style>
+</head>
+<body>
+	<div class="test1"></div>
+	
+	<script type="text/javascript">
+    window.onload = function(){
+
+    // rem适配的最终版
+        (function(){
+        	var dpr = window.devicePixelRatio;
+
+        	var oStyle = document.createElement('style');
+
+        	/*
+    修改initial-scale会改变布局宽度的大小，从而影响rem布局，为了避免不影响rem布局
+    需要将布局窗口的宽度修改回来，也就是再乘以dpr。
+        	*/
+        	var w = document.documentElement.clientWidth * dpr/16;
+            oStyle.innerHTML = 'html{font-size:'+ w  +'px !important}'
+        	document.body.appendChild(oStyle);
+            
+            var scale = 1/dpr;
+
+            var meta =document.querySelector('meta[name = "viewport"]');
+            meta.content = 'width = device-width  initial-scale ='+scale+' user-scalable = no '
+        })()
+
+
+    }
+
+
+
+
+
+
+
+	</script>
+</body>
+</html>
