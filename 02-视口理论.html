@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>视口理论</title>
+	<meta name = "viewport" content = "width = device-width">
+	<style type="text/css">
+		*{
+			margin:0;
+			padding:0;
+		}
+		#test{
+			width:310px;
+			height:200px;
+			background-color:red;
+		}
+	</style>
+</head>
+<body>
+	<script type="text/javascript">
+		/*
+	移动端视口的获取：
+	document.documentElement.clientWidth  //layout的宽度 没有兼容性问题
+	window.innerWidth  //visual的宽度,接近全部支持
+	screen.width //有很大的兼容性问题 一半的浏览器将其设置为理想视口的宽度，一半浏览器将其设置为设备的分辨率。
+		*/
+
+	var layout = document.documentElement.clientWidth;
+
+	// 下面的api基本上不会用
+	var visual = window.innerWidth;
+	var dream = screen.width;
+
+
+
+	</script>
+	<div id="test">
+		
+	</div>
+
+	
+</body>
+</html>
