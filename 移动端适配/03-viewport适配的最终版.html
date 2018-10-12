@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>viewport适配</title>
+	<meta name = 'viewport' content = 'width = device-width '>
+<style type="text/css">
+*{
+	margin:0;
+	padding:0;
+}
+	.test{
+		width:320px;
+		height:100px;
+		background:red;
+	}
+</style>
+</head>
+<body>
+	<div class="test">
+		
+	</div>
+	<script type="text/javascript">
+
+
+    /*
+    将布局视口的宽度调整为设计图的宽度，能够修改布局视口的宽度的方法有两种
+    一种是修改width  但是这样的话就将width设置死了
+    另外一种是设置initial-scale
+
+    */
+
+    // viewort适配：
+    (function(){
+      // 设计图的宽度为320px
+		var targetW = 640;
+		// 要让设计图的宽度和布局视图的宽度一致，说明布局视口需要变小
+		var scale = document.documentElement.clientWidth/targetW;
+		
+		var meta = document.querySelector('meta[name = "viewport"]');
+		// 注意meta标签中，不能再设置width = devce-width否则的话如果这个值大于initial-scale的值，就不取决于initial-scale了
+		meta.content = ' initial-scale = '+ scale + ',user-scalable = no,maximum-scale = '+ scale +', minimum-scale = '+ scale +'';
+    })()
+
+
+    
+		
+		
+
+
+		
+	</script>
+</body>
+</html>

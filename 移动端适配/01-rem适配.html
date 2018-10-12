@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>rem适配</title>
+	<meta name = 'viewport' content = 'width = device-width  initial-scale = 1.0 user-scalable = no  minimum-scale = 1.0 maximum-scale = 1.0'>
+	<style type="text/css">
+		.test1{
+			width:16rem;
+			height:16rem;
+			background:red;
+		}
+		.test2{
+			width:8rem;
+			height:8rem;
+			background:green;
+		}
+	</style>
+</head>
+<body>
+	<div class="test1"></div>
+	<div class="test2"></div>
+	<script type="text/javascript">
+		// rem:相当于根标签的font-size。也即是说根标签的font-size = 1rem
+		var html =document.querySelector('html');
+        // 适配：让每一个元素在不同设备上等比显示
+        // 1rem代表占满整个屏幕的宽度
+         // html.style.fontSize = document.documentElement.clientWidth + 'px';
+
+        // 16rem 才代表整个页面的宽度  
+        html.style.fontSize = document.documentElement.clientWidth/16 + 'px';
+        // 布局视口的宽度就是16rem。主要是为了避免出现小数
+        // 设计图的宽度就是16rem
+        // 8rem占据的百分比就是一半
+
+
+
+
+    // rem适配的最终版
+        (function(){
+
+        	var oStyle = document.createElement('style');
+
+
+        	var w = document.documentElement.clientWidth/16;
+            oStyle.innerHTML = 'html:{font-size:'+ w  +'px !important}'
+
+
+
+        	documet.appendChild(oStyle);
+        })()
+
+
+
+
+	</script>
+</body>
+</html>
