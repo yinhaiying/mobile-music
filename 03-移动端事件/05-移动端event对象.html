@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>移动端的基础事件</title>
+	<meta name = 'viewport' content = 'width = device-width,initial-scale = 1.0,user-scalable = no,maximum-scale = 1.0,minimum-scale = 1.0'>
+	<style type="text/css">
+		.item{
+			width:100px;
+			height:100px;
+			background:red;
+			text-align:center;
+			line-height:100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="item">hello world</div>
+	<script type="text/javascript">
+	
+		window.onload = function(){
+			/*
+        event对象
+        changedTouches:触发当前事件的手指列表。使用最多的就是这个
+        targetTouches:触发当前事件后元素身上还剩下的手指列表
+        touches:触发当前事件后屏幕上还剩下的手指列表
+
+			*/
+			var oItem = document.querySelector('.item');
+			oItem.addEventListener('touchend',function(ev){
+				ev = ev || event;
+				console.log(ev);
+				
+			});
+			
+		}
+	</script>
+</body>
+</html>

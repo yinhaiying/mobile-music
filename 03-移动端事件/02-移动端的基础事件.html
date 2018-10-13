@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>移动端的基础事件</title>
+	<meta name = 'viewport' content = 'width = device-width,initial-scale = 1.0,user-scalable = no,maximum-scale = 1.0,minimum-scale = 1.0'>
+	<style type="text/css">
+		.item{
+			width:100px;
+			height:100px;
+			background:red;
+			text-align:center;
+			line-height:100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="item">hello world</div>
+	<script type="text/javascript">
+		/*
+    移动端事件：触摸事件
+    touchstart    mousedown
+    toucemove          mousemove
+    其中移动端touchmove事件无法单独触发，而PC端mousemove事件可以被单独触发
+    touceend      mouseup
+
+		*/
+		window.onload = function(){
+			var oItem = document.querySelector('.item');
+			oItem.addEventListener('touchstart',function(ev){
+				console.log('touchstart')
+			});
+			oItem.addEventListener('touchmove',function(){
+				console.log('touchmove')
+			});
+			oItem.addEventListener('touchend',function(){
+				console.log('touchend')
+			})
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>移动端的事件点透</title>
+	<meta name = 'viewport' content = 'width = device-width,initial-scale = 1.0,user-scalable = no,maximum-scale = 1.0,minimum-scale = 1.0'>
+	<style type="text/css">
+		.item{
+			width:100px;
+			height:100px;
+			background:red;
+			opacity:0.5;
+			position:absolute;
+			left:0;
+			top:0;
+		}
+	</style>
+</head>
+<body>
+
+	<div class="item"></div>
+	<a href="https://www.baidu.com/">百度</a>
+	<script type="text/javascript">
+		window.onload = function(){
+
+			document.addEventListener('touchstart',function(ev){
+				ev = ev||event;
+				ev.preventDefault();
+			});
+			
+			var oDiv = document.querySelector('.item');
+			oDiv.addEventListener('touchstart',function(){
+	          this.style.display = 'none';
+			})
+			var aA = document.getElementsByTagName('a');
+
+			for(let i = 0;i < aA.length;i++){
+
+				aA[i].addEventListener('touchmove',function(){
+
+					this.isMoved = true;
+					
+				})
+
+				aA[i].addEventListener('touchend',function(){
+					if(!isMoved){
+						window.location.href = this.href;
+						this.isMoved = false;
+					}
+				})
+			}
+
+		}
+		
+
+	</script>
+
+</body>
+</html>

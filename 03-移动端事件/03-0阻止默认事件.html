@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事件流</title>
+	<style type="text/css">
+		.item{
+			width:100px;
+			height:100px;
+			background:red;
+			margin:100px 0 0 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="item">hello </div>
+	<script type="text/javascript">
+
+		var oItem = document.querySelector('.item');
+		oItem.onclick = function(ev){
+			this.innerText = 'item';
+		}
+		
+		// 通过冒泡机制，父元素的修改才是最终的结果
+		document.addEventListener('click',function(ev){
+			oItem.innerText = 'haha'
+		})
+		
+	</script>
+</body>
+</html>
