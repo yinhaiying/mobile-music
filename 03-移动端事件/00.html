@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>移动端的基础事件</title>
+	<meta name = 'viewport' content = 'width = device-width,initial-scale = 1.0,user-scalable = no,maximum-scale = 1.0,minimum-scale = 1.0'>
+	<style type="text/css">
+		.item{
+			width:100px;
+			height:100px;
+			background:red;
+			text-align:center;
+			line-height:100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="item">hello world</div>
+	<script type="text/javascript">
+		/*
+   在移动端存在一些默认事件,比如：
+   1.长按选中文字
+   2.下拉橡皮筋刷新行为等
+   这些默认事件我们通常需要禁止掉，以免影响自己的事件，比如刷新等。
+
+		*/
+
+
+		window.onload = function(){
+			// 阻止掉document身上的默认事件
+			document.addEventListener('touchstart',function(ev){
+				ev = ev||event;
+				ev.preventDefault();
+			}
+
+			var oItem = document.querySelector('.item');
+			// 阻止冒泡
+			oItem.addEventListener('touchstart',function(ev){
+				ev =ev ||event;
+				ev.stoppropagation();
+			})
+
+		}
+
+
+
+
+		/*
+			阻止元素的默认行为，有两种实现方式：
+			1、在元素本身阻止事件的默认行为
+			2、在元素的父元素身上阻止事件的默认行为
+			*/
+
+
+				/*
+                1、移动端的默认事件能不能够被阻止，需要查看event对象上的cancelable属性，如果该属性为true,那么该事件可以被阻止。否则默认事件无法被阻止。
+                2、阻止默认事件：是通过冒泡的机制，通过在document身上取消冒泡。
+                3、是否成功阻止事件的默认行为跟是否取消冒泡有关。如果对元素取消了冒泡，那么该默认事件没有被阻止掉。
+                4、移动端开发一上来就需要阻止掉默认事件
+                5、阻止所有的默认事件后，所有的滚动条失效。因此我们通常需要自定义滚动条
+				*/
+	</script>
+</body>
+</html>

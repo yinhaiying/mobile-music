@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>动态生成无缝滑屏布局</title>
+	<meta name = 'viewport' content = 'width = device-width,initial-scale = 1.0, user-scalable = no,maximum-scale = 1.0,minimum-scale = 1.0'>
+	<style type="text/css">
+		*{margin:0;padding:0;}
+		html,body{
+			height:100%;
+			overflow:hidden;
+		}
+		#wrap{
+			height:100%;
+			overflow:hidden;
+		}
+		.carousel-wrap>.list{
+          list-style:none;
+		}
+		.carousel-wrap>.list>li>a,.carousel-wrap>.list>li>a>img{
+			display:block;
+		}
+		.carousel-wrap>.list>li>a>img{
+			/*让图片自适应*/
+			width:100%;
+		}
+		.carousel-wrap>.list{
+			/*由于需要进行拖动，因此需要设置ul的定位。但是这样会脱离文档流，父元素高度消失*/
+			position:absolute;
+			overflow:hidden;
+		}
+		.carousel-wrap>.list>li{
+			float:left;
+		}
+		
+	</style>
+</head>
+<body>
+	<div id="wrap">
+		<div class="carousel-wrap">
+		</div>
+	</div>
+	<script type="text/javascript">
+		// 默认事件的清除
+		document.addEventListener('touchstart',function(ev){
+			ev = ev || window.event;
+			ev.preventDefault();
+		})
+		var arr = ['./img/01.jpg','./img/02.jpg','./img/03.jpg','./img/04.jpg','./img/05.jpg','./img/06.jpg'];
+
+		function carousel(arr){
+			var carouselWrap = document.querySelector('.carousel-wrap');
+			var len = arr.length; 
+			if(carouselWrap){
+				var oUl = document.createElement('ul');
+				var oStyle = document.createElement('style');
+				// 由于图片的数量不清楚，因此这里样式也需要动态设置。
+				oStyle.innerHTML = ".carousel-wrap>.list>li{width:"+(1/len*100)+"%;}.carousel-wrap>.list{width:"+(len * 100)+"%;}"
+				oUl.className = 'list';
+	            for(var i = 0;i < arr.length;i++){
+	            	oUl.innerHTML += "<li><a href = 'javascript:;'><img src='"+arr[i]+"'></a></li>";
+	            }
+				carouselWrap.appendChild(oUl);
+				document.head.append(oStyle);
+				// 手动设置滑屏的高度.滑屏的高度应该等任意一张图的高度
+				var oImg = document.querySelector('.carousel-wrap>.list>li>a>img')
+				setTimeout(() => {
+					carouselWrap.style.height = oImg.offsetHeight+'px';
+				},0)
+				
+			}
+		}
+		carousel(arr)
+
+		
+	</script>
+	
+</body>
+</html>
