@@ -113,51 +113,60 @@
 				// 实现滑屏功能
 				var startX = 0;
 				var elementX = 0;
-				// 使用translateX来代替offsetLeft。
 				var translateX = 0;
 				carouselWrap.addEventListener('touchstart',function(ev){
                   ev = ev || window.event;
                   oUl.style.transition = 'none';
-                var touchC = ev.changedTouches[0];
-                    startX = touchC.clientX;
-                    elementX = translateX;
+                  var touchC = ev.changedTouches[0];
+                      startX = touchC.clientX;
+                    // elementX = oUl.offsetLeft;
+                      elementX = translateX;
 
-				})
+				});
+
 				carouselWrap.addEventListener('touchmove',function(ev){
 					ev = ev || window.event;
 					var touchC = ev.changedTouches[0];
 					var nowX = touchC.clientX;
 					var disX = nowX - startX;
-					oUl.style.left = elementX + disX + 'px';
+					// oUl.style.left = elementX + disX + 'px';
+					translateX = elementX + disX;
+					
+					oUl.style.transform ='translateX('+translateX+'px)';
+
 				})
 				
-
 				carouselWrap.addEventListener('touchend',function(ev){
 					ev = ev || window.event;
 					// index用来判断图片，
-				var index = oUl.offsetLeft /document.documentElement.clientWidth;
-				console.log(index);
-				// 对index四舍五入，如果小于0.5说明没有滑过一半
-				index = Math.round(index);
-				// 超出控制
-				if(index > 0){
-					index = 0;
-				}else if(index < -(len-1)){
-					index = -(len-1);
-				}
+					// var index = oUl.offsetLeft /document.documentElement.clientWidth;
+	                
+					var index = translateX /document.documentElement.clientWidth;
+					// 对index四舍五入，如果小于0.5说明没有滑过一半
+					index = Math.round(index);
+					console.log(index)
+					// 超出控制
+					if(index > 0){
+						index = 0;
+					}else if(index < -(len-1)){
+						index = -(len-1);
+					}
+					// 小圆点与index值相反
+					for(var i = 0;i < pointsSpan.length;i++){
+						pointsSpan[i].classList.remove('active');
+					}
+					pointsSpan[-index].classList.add('active');
 
-				// 小圆点与index值相反
-				for(var i = 0;i < pointsSpan.length;i++){
-					pointsSpan[i].classList.remove('active');
-				}
-				pointsSpan[-index].classList.add('active');
 
 
-
-				// 如果index为正，说明oUl.offsetLset为正，因此向右滑动，相反向左滑动
-				oUl.style.left = index * (document.documentElement.clientWidth) + 'px';
-				oUl.style.transition = '1s left';
+					// 如果index为正，说明oUl.offsetLset为正，因此向右滑动，相反向左滑动
+					// oUl.style.left = index * (document.documentElement.clientWidth) + 'px';
+					translateX = index * (document.documentElement.clientWidth)
+					oUl.style.transform ='translateX('+translateX+'px)'
+					oUl.style.transition = '1s left';
 				})
+
+
 				
 			}
 		}
