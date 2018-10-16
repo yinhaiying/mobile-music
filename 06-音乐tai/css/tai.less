@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+//1rem对应于多少像素
+@rem:1080/16rem;
+html,body {
+  height: 100%;
+  overflow: hidden;
+}
+#wrap {
+  height: 100%;
+  overflow: hidden;
+  .head {
+    position: absolute;
+    width: 100%;
+    background: pink;
+    .logo img {
+      //240像素对应于多少rem
+      width: 240/@rem;
+    }
+  }
+}
