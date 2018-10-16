@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>基本滑屏功能的实现</title>
 	<meta name = 'viewport' content = 'width = device-width,initial-scale = 1.0, user-scalable = no,maximum-scale = 1.0,minimum-scale = 1.0'>
+	<script src = './js/transform.js'></script>
 	<style type="text/css">
 		*{margin:0;padding:0;}
 		html,body{
@@ -59,7 +61,7 @@
 </head>
 <body>
 	<div id="wrap">
-		<div class="carousel-wrap">
+		<div class="carousel-wrap" needCarousel>
 			<div class="point-wrap">
 				
 			</div>
@@ -75,6 +77,14 @@
         // 实现布局
 		function carousel(arr){
 			var carouselWrap = document.querySelector('.carousel-wrap');
+			var pointsLength = arr.length;
+			var needCarousel = carouselWrap.getAttribute('needCarousel');
+			needCarousel = needCarousel ===null ?false:true;
+			if(needCarousel){
+				// 无缝的实现
+			    arr = arr.concat(arr);
+			}
+			
 			var len = arr.length; 
 			if(carouselWrap){
 				// 实现布局
@@ -97,7 +107,7 @@
 				// 实现小圆点的添加
 				var pointWrap = document.querySelector('.carousel-wrap>.point-wrap');
 				if(pointWrap){
-					for(var i = 0;i < arr.length;i++){
+					for(var i = 0;i < pointsLength;i++){
 						if(i === 0){
 							 pointWrap.innerHTML += "<span class='active'></span>";
 						}else{
@@ -113,50 +123,95 @@
 				// 实现滑屏功能
 				var startX = 0;
 				var elementX = 0;
+				// var translateX = 0;
 				carouselWrap.addEventListener('touchstart',function(ev){
                   ev = ev || window.event;
                   oUl.style.transition = 'none';
-                var touchC = ev.changedTouches[0];
-                    startX = touchC.clientX;
-                    elementX = oUl.offsetLeft;
+                  // 清除自动轮播的定时器
+                  clearInterval(timer);
+                  if(needCarousel){
+	                  	    // 无缝的实现 通过两组相同的图片实现无缝
+	                  // 点击第一组第一张时，马上调到第二组第一张。
+	                  // 点击第二组的最后一张时，马上跳到第一组的最后一张
 
-				})
+	                  // index代表index的位置。
+	                 var index = cssHandle.css(oUl,'translateX') /document.documentElement.clientWidth;
+	                 if(-index === 0){
+	                 	index = -pointsLength;
+	                 }else if( - index === (arr.length -1)){
+	                 	index = - (pointsLength -1);
+	                 }
+	                 cssHandle.css(oUl,'translateX',index * (document.documentElement.clientWidth));
+                  }
+                  var touchC = ev.changedTouches[0];
+                      startX = touchC.clientX;
+                    // elementX = oUl.offsetLeft;
+                      // elementX = translateX;
+                      elementX = cssHandle.css(oUl,'translateX');
+
+				});
+
 				carouselWrap.addEventListener('touchmove',function(ev){
 					ev = ev || window.event;
 					var touchC = ev.changedTouches[0];
 					var nowX = touchC.clientX;
 					var disX = nowX - startX;
-					oUl.style.left = elementX + disX + 'px';
+					// oUl.style.left = elementX + disX + 'px';
+					// translateX = elementX + disX;
+					// oUl.style.transform ='translateX('+translateX+'px)';
+					cssHandle.css(oUl,'translateX',elementX+disX);
+
 				})
 				
-
 				carouselWrap.addEventListener('touchend',function(ev){
 					ev = ev || window.event;
 					// index用来判断图片，
-				var index = oUl.offsetLeft /document.documentElement.clientWidth;
-				console.log(index);
-				// 对index四舍五入，如果小于0.5说明没有滑过一半
-				index = Math.round(index);
-				// 超出控制
-				if(index > 0){
-					index = 0;
-				}else if(index < -(len-1)){
-					index = -(len-1);
-				}
+					// var index = oUl.offsetLeft /document.documentElement.clientWidth;
+	                
+					// var index = translateX /document.documentElement.clientWidth;
+					var index = cssHandle.css(oUl,'translateX') /document.documentElement.clientWidth;
+					// 对index四舍五入，如果小于0.5说明没有滑过一半
+					index = Math.round(index);
+					// 超出控制
+					if(index > 0){
+						index = 0;
+					}else if(index < -(len-1)){
+						index = -(len-1);
+					}
+					// 小圆点与index值相反
+					for(var i = 0;i < pointsSpan.length;i++){
+						pointsSpan[i].classList.remove('active');
+					}
+					pointsSpan[-index % pointsLength].classList.add('active');
+					// 如果index为正，说明oUl.offsetLset为正，因此向右滑动，相反向左滑动
+					// oUl.style.left = index * (document.documentElement.clientWidth) + 'px';
 
-				// 小圆点与index值相反
-				for(var i = 0;i < pointsSpan.length;i++){
-					pointsSpan[i].classList.remove('active');
-				}
-				pointsSpan[-index].classList.add('active');
+					// translateX = index * (document.documentElement.clientWidth)
+					// oUl.style.transform ='translateX('+translateX+'px)';
+					cssHandle.css(oUl,'translateX',index * (document.documentElement.clientWidth));
 
+					oUl.style.transition = '1s transform';
 
-
-				// 如果index为正，说明oUl.offsetLset为正，因此向右滑动，相反向左滑动
-				oUl.style.left = index * (document.documentElement.clientWidth) + 'px';
-				oUl.style.transition = '1s left';
+					// 开启自动轮播
+					autoPlay();
 				})
-				
+				autoPlay();
+				var timer = null;
+				var autoFlag = 0;
+				function autoPlay(){
+					clearInterval(timer)
+					timer = setInterval(function(){
+						autoFlag++;
+						autoFlag = autoFlag % pointsLength;
+						oUl.style.transition = '2s,transform';
+						cssHandle.css(oUl,'translateX',-autoFlag*document.documentElement.clientWidth);
+					// 小圆点的自动变化
+					for(var i = 0;i < pointsSpan.length;i++){
+						pointsSpan[i].classList.remove('active');
+					}
+					pointsSpan[autoFlag % pointsLength].classList.add('active');
+					},2000)
+				}				
 			}
 		}
 		carousel(arr);

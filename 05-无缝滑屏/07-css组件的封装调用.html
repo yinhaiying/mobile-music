@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>transform的组合</title>
+	<style>
+		.test{
+			width:100px;
+			height:100px;
+			background:red;
+			/*transform:translateX(100px) scale(2);*/
+		}
+	</style>
+	<script src = './js/transform.js'></script>
+</head>
+<body>
+	<div class="test"></div>
+	<script type="text/javascript">
+		/*
+    css函数对transform的值进行读取操作
+    css(node,type) 两个参数 读操作
+    css(node,type,val) 三个参数 写操作
+
+    规避覆盖的风险，通过for in 循环进行了拼接
+		*/
+		var test = document.querySelector('.test');
+		cssHandle.css(test,'translateX',100);
+		cssHandle.css(test,'scale',2)
+		console.log(cssHandle.css(test,'translateX'));
+	
+
+	</script>
+</body>
+</html>
